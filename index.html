@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>16 Personality Factor Test - Instructions</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; color: #333; line-height: 1.6; }
+        .container { max-width: 700px; margin: auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
+        h1 { text-align: center; color: #007BFF; margin-bottom: 20px; }
+        h3 { color: #0056b3; margin-top: 20px; }
+        p { text-align: justify; }
+        ul { padding-left: 20px; }
+        ul li { margin-bottom: 10px; }
+        .proceed-section { margin-top: 20px; text-align: center; }
+        .proceed-btn { 
+            margin-top: 10px; 
+            padding: 12px 20px; 
+            font-size: 16px; 
+            cursor: pointer; 
+            background-color: #007BFF; 
+            color: white; 
+            border: none; 
+            border-radius: 25px; 
+            width: 50%; 
+            text-align: center; 
+            transition: background 0.3s ease;
+        }
+        .proceed-btn:hover:not(:disabled) { background-color: #0056b3; }
+        .proceed-btn:disabled { background-color: #ccc; cursor: not-allowed; }
+        label { display: block; margin-top: 15px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Instructions</h1>
+        <p>Welcome to the 16 Personality Factor Test. Please read the instructions carefully before proceeding:</p>
+        
+        <h3>WHAT TO DO:</h3>
+        <p>On the next page, you will find a set of questions designed to assess your attitudes and interests. There are no 'RIGHT' or 'WRONG' answers because everyone is entitled to their own views. To receive the most accurate results, answer honestly and instinctively. Each question has three possible answers; choose the one that best represents you.</p>
+        
+        <h3>THINGS TO REMEMBER</h3>
+        <ul>
+            <li><strong>DO NOT SPEND TIME PONDERING.</strong> Give your first, natural response.</li>
+            <li>Try to avoid the middle ‘uncertain’ option unless absolutely necessary—perhaps once every four or five questions.</li>
+            <li><strong>All questions are MANDATORY.</strong></li>
+            <li><strong>Answer HONESTLY.</strong> Do not select answers just to impress the examiner.</li>
+        </ul>
+        
+        <div class="proceed-section">
+            <label>
+                <input type="checkbox" id="agreeCheckbox" onclick="toggleProceedButton()"> I have read the instructions carefully
+            </label>
+            <button class="proceed-btn" id="proceedBtn" onclick="proceedToTest()" disabled>Proceed</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleProceedButton() {
+            document.getElementById("proceedBtn").disabled = !document.getElementById("agreeCheckbox").checked;
+        }
+
+        function proceedToTest() {
+            window.location.href = "quiz.html";
+        }
+    </script>
+</body>
+</html>

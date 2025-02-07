@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>16 Personality Factor Test</title>
+    <style>
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background: linear-gradient(135deg, #007BFF, #00c6ff); 
+            color: #333; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { 
+            max-width: 800px; 
+            background: white; 
+            padding: 40px; 
+            border-radius: 12px; 
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2); 
+            text-align: center; 
+        }
+        h1 { color: #007BFF; margin-bottom: 20px; }
+        p { font-size: 16px; color: #555; margin-bottom: 20px; }
+        .question { margin: 30px 0; font-weight: bold; text-align: left; }
+        .options { display: flex; flex-direction: column; gap: 15px; text-align: left; }
+        .options label { 
+            padding: 12px; 
+            background: #f4f4f4; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: 0.3s;
+        }
+        .options label:hover { background: #e0e0e0; }
+        .submit-btn { 
+            margin-top: 30px; 
+            padding: 15px; 
+            font-size: 18px; 
+            font-weight: bold;
+            cursor: pointer; 
+            background: #007BFF; 
+            color: white; 
+            border: none; 
+            border-radius: 8px; 
+            width: 100%; 
+            transition: 0.3s;
+        }
+        .submit-btn:hover { background: #0056b3; }
+        .submit-btn:disabled { background: #ccc; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>16 Personality Factor Test</h1>
+        <p>Answer the following questions truthfully to determine your personality traits.</p>
+        <form id="quizForm">
+            <div id="quizContainer"></div>
+            <button type="button" class="submit-btn" id="submitBtn" onclick="submitQuiz()" disabled>Submit</button>
+        </form>
+    </div>
+    <script src="questions.js"></script>
+    <script>
+        function loadQuiz() {
+            const container = document.getElementById("quizContainer");
+            container.innerHTML = ""; // Clear existing content
+            questions.sort((a, b) => a.id - b.id); // Ensure sorting starts from 1
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement("div");
+                questionDiv.classList.add("question");
+                questionDiv.innerHTML = `<p>${index + 1}. ${q.question}</p>`;
+                
+                const optionsDiv = document.createElement("div");
+                optionsDiv.classList.add("options");
+                
+                Object.keys(q.options).forEach(option => {
+                    const optionText = q.options[option].text;
+                    const score = q.options[option].score;
+                    optionsDiv.innerHTML += `
+                        <label>
+                            <input type="radio" name="question${index}" value="${score}" onchange="checkCompletion()"> ${optionText}
+                        </label>
+                    `;
+                });
+                
+                questionDiv.appendChild(optionsDiv);
+                container.appendChild(questionDiv);
+            });
+        }
+        function checkCompletion() {
+            const totalQuestions = questions.length;
+            let answeredCount = 0;
+            questions.forEach((_, index) => {
+                if (document.querySelector(`input[name="question${index}"]:checked`)) {
+                    answeredCount++;
+                }
+            });
+            document.getElementById("submitBtn").disabled = answeredCount !== totalQuestions;
+        }
+        function submitQuiz() {
+            let results = [];
+            questions.forEach((q, index) => {
+                const selectedOption = document.querySelector(`input[name="question${index}"]:checked`);
+                const score = selectedOption ? parseInt(selectedOption.value) : 0;
+                results.push({ sNo: index + 1, statement: q.question, score: score });
+            });
+            localStorage.setItem("quizResults", JSON.stringify(results));
+            window.location.href = "results.html";
+        }
+        window.onload = loadQuiz;
+    </script>
+</body>
+</html>

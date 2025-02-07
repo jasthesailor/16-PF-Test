@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factor Scores</title>
+    <style>
+        body {
+            font-family: "Poppins", sans-serif;
+            margin: 0;
+            background-color: #f9fafb;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+            text-align: center;
+        }
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            text-align: center;
+            color: #007BFF;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: white;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background: #007BFF;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background: #f2f2f2;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .button {
+            background: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Factor Scores</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Factor</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody id="factorScoresTable"></tbody>
+        </table>
+        <div class="button-container">
+            <button class="button" onclick="window.location.href='results.html'">Back to Results</button>
+        </div>
+    </div>
+
+    <script>
+        function calculateFactorScores() {
+            const results = JSON.parse(localStorage.getItem("quizResults")) || [];
+            const factorMapping = {
+                "A": [3,26,27,51,52,76,101,126,151,176],
+                "B": [28,53,54,77,78,102,103,127,128,152,153,177,178],
+                "C": [4,5,29,30,55,79,80,104,105,129,130,154,179],
+                "E": [6,7,31,32,56,57,81,106,131,155,156,180,181],
+                "F": [8,33,58,82,83,107,108,132,133,157,158,182,183],
+                "G": [9,34,59,84,109,134,159,160,184,185],
+                "H": [10,35,36,60,61,85,86,110,111,135,136,161,186],
+                "I": [11,12,37,62,87,112,137,138,162,163],
+                "L": [13,38,63,64,88,89,113,114,139,164],
+                "M": [14,15,39,40,65,90,115,140,165,91,116,141,166],
+                "N": [16,17,41,42,66,67,92,117,142,167],
+                "O": [18,19,43,44,68,69,93,94,118,119,143,144,168],
+                "Q1": [20,21,45,46,70,95,120,145,170,169],
+                "Q2": [22,47,71,72,96,97,121,122,146,171],
+                "Q3": [23,24,48,73,98,123,147,148,172,173],
+                "Q4": [25,49,50,74,75,99,100,124,125,149,150,174,175]
+            };
+            
+            const factorScores = {};
+            Object.keys(factorMapping).forEach(factor => {
+                factorScores[factor] = factorMapping[factor].reduce((sum, qNum) => {
+                    const entry = results.find(r => r.sNo == qNum);
+                    return sum + (entry ? entry.score : 0);
+                }, 0);
+            });
+            
+            const tableBody = document.getElementById("factorScoresTable");
+            Object.entries(factorScores).forEach(([factor, score]) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `<td>${factor}</td><td>${score}</td>`;
+                tableBody.appendChild(row);
+            });
+        }
+        window.onload = calculateFactorScores;
+    </script>
+</body>
+</html>
